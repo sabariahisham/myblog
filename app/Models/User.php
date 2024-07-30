@@ -45,26 +45,16 @@ class User extends Authenticatable
         ];
     }
 
-    function getRouteKeyName() { //tambah
-        return 'uuid'; //untuk user dlm web.php
+    function getRouteKeyName(){
+        return 'uuid';
     }
 
-    /**
-     * Get all of the comments for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function posts()  //plural (pandang dr sisi user)
+    public function posts()
     {
         return $this->hasMany(Post::class, 'author', 'id');
     }
 
-    /**
-     * Get all of the comments for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function comments() //plural (pandang dr sisi user)
+    public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id', 'id');
     }
