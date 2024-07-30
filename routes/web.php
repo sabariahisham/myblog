@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
-// DB::listen(function ($event) {
-//      dump($event->sql);
-// });
+DB::listen(function ($event) {
+    dump($event->sql);
+}); //listenquery
+
 
 Route::get('/', function () {
     return view('welcome');
