@@ -20,12 +20,12 @@ class Post extends Model
     protected $guarded = ['id'];
 
 
-    public function user()
+    public function user() //turun dlm bentuk model
     {
         return $this->belongsTo(User::class, 'author', 'id');
     }
 
-    public function comments()
+    public function comments() //turun dlm bentuk collection
     {
         return $this->hasMany(Comment::class, 'post_id', 'id');
     }

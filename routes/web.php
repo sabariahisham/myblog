@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 
-DB::listen(function ($event) {
-    dump($event->sql);
-}); //listenquery
+//listenquery
+// DB::listen(function ($event) {
+//     dump($event->sql);
+// });
 
 
 Route::get('/', function () {
@@ -23,3 +25,6 @@ Route::post('/users/{user}', function (User $user) {
 Route::post('/users/{user}/edit', function (User $user) {
     return $user;
 });
+
+
+Route::get('posts',[PostController::class, 'index'])->name('posts.index');
