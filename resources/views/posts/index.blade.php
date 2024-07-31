@@ -35,9 +35,20 @@
                         {{ $post->content }}
                     </p>
                     <hr>
-                    <h3>Comments</h3>
+                    <h3>Comments [{{ $post->comments->count() }}]</h3>
+                    <form method="POST" name="commentForm" id="commentForm" action="{{ route('comment.store') }}"
+                        class="form-horizontal">
+                        @csrf {{-- token random for request submit form --}}
+                        {{-- @method('PUT') //untuk edit form --}}
+
+                        <div class="btn-group float-right">
+                            <button type="submit" class="btn btn-success">Add Comment</button>
+                        </div>
+
+                    </form>
                     @foreach ($post->comments as $comment)
-                        <p> <strong>{{ $comment->user->name }}</strong><br>{{ $comment->content }}</p>
+                        <p> <strong>ID:{{ $comment->user->id }}-{{ $comment->user->name }}
+                                [{{ $comment->user->posts->count() }}]</strong><br>{{ $comment->content }}</p>
                     @endforeach
                 </div>
             </div>

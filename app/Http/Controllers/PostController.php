@@ -13,18 +13,19 @@ class PostController extends Controller
     public function index()
     {
         /** coding test from Cikgu Kamal - eager loading*/
-        $posts = Post::select('id','title','content','author')->with(['user'=>function($q){
+        /* $posts = Post::select('id','title','content','author')->with(['user'=>function($q){
             $q->select('id','name','email');
         },'comments'=>function($q){
             $q->select('post_id','content','user_id');
         },'comments.user'=>function($q){
             $q->select('id','name');
-        }])->get();
+        }])->get(); */
+       // }])->withCount('user.posts')->get();
         // return response()->json($posts);
 
 
         //lazy loading//
-        //$posts = Post::all();
+        $posts = Post::all(); //-select * from `posts`
         //eager loading//
         //$posts = Post::with('user','comments.user.comments')->get();
         //return response()->json($posts);
@@ -49,7 +50,32 @@ class PostController extends Controller
         // ]);
 
         //return view('posts.index', compact('post', 'comments')); //cara ringkas
+        //-return view('posts.index', compact('posts'));
+
+        //$posts = Post::withCount('comments')->get();
+        //return view('posts.comment', compact('posts'));
+
+        //$posts = Post::whereHas('comments')->count(); //output 497
+        //$posts = Post::whereDoesntHave('comments')->count(); //output 3
+        $posts = Post::whereHas('comments', function($query){
+            $query->where('user_id', 3);
+        })->get(); //load record yg ada user_id=3
+        //dd($posts);
+
+        $posts = Post::with(['comments' => function($query) {
+            $query->where('user_id', 3);
+        }])->get(); //bawa semua termasuk null record
+
+        $posts = Post::whereHas('comments',function($query){
+            $query->where('user_id',3);
+        })->with(['comments'=>function($query){
+            $query->where('user_id',3);
+        }])->get();
+        //whereHas: select * from `posts` where exists (select * from `comments` where `posts`.`id` = `comments`.`post_id` and `user_id` = ?)
+        //with: select * from `comments` where `comments`.`post_id` in (3, 4, 10, 12, 13, 31, 54, 69, 73, 78, 79, 97, 99, 128, 137, 161, 167, 173, 179, 212, 217, 219, 230, 235, 236, 243, 255, 269, 307, 311, 319, 324, 344, 366, 388, 392, 403, 418, 428, 437, 438, 440, 469, 474, 496) and `user_id` = ?
+
         return view('posts.index', compact('posts'));
+
     }
 
     /**
