@@ -19,6 +19,10 @@ class Post extends Model
 
     protected $guarded = ['id'];
 
+    function getRouteKeyName()
+    {
+        return 'uuid'; //untuk guna uuid
+    }
 
     public function user() //turun dlm bentuk model
     {

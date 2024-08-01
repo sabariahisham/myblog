@@ -45,7 +45,8 @@ class User extends Authenticatable
         ];
     }
 
-    function getRouteKeyName(){
+    function getRouteKeyName()
+    {
         return 'uuid';
     }
 
